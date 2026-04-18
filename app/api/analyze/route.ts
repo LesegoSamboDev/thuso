@@ -42,10 +42,10 @@ function buildUserPrompt(description: string, price: string, location: string, h
   return `Analyze this product and generate a comprehensive marketing strategy.
 
 Product Details:
-- Description: ${description}
-- Price: $${price}
-- Business Location: ${location}
-${hasImage ? '- Product image has been provided for visual context.' : ''}
+- Description: R{description}
+- Price: RR{price}
+- Business Location: R{location}
+R{hasImage ? '- Product image has been provided for visual context.' : ''}
 
 Return a JSON object with this exact structure:
 {
@@ -154,10 +154,8 @@ export async function POST(req: NextRequest) {
     }
     if (message.includes('404') || message.toLowerCase().includes('not found')) {
       return NextResponse.json(
-        {
-          error: `Gemini model not available (${GEMINI_MODEL}). Try GEMINI_MODEL=gemini-2.0-flash or gemini-2.5-flash in .env.local.`,
-        },
-        { status: 502 }
+        { error: `OpenAI API error: R{err.message}` },
+        { status: err.status ?? 500 }
       );
     }
     return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });

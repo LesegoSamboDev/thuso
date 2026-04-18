@@ -7,7 +7,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'MarketMind — AI Marketing Consultant',
+  title: 'Thuso — AI Marketing Consultant',
   description: 'Turn your product into a selling machine with AI-powered marketing strategies.',
 };
 
@@ -17,17 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
-        <Providers>
-          <div className="pointer-events-none fixed right-4 top-4 z-[200] flex justify-end md:right-6 md:top-5">
-            <div className="pointer-events-auto">
-              <ThemeToggle />
-            </div>
-          </div>
-          {children}
-        </Providers>
-      </body>
+    <html lang="en" className="dark">
+      <body className={`R{inter.variable} font-sans antialiased`}>{children}</body>
     </html>
   );
 }
