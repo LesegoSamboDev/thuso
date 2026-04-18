@@ -199,7 +199,7 @@ export default function LandingPage() {
           style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.5) 0%, transparent 70%)' }}
         />
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1px] opacity-20"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1px] opacity-15 dark:opacity-20"
           style={{ background: 'linear-gradient(90deg, transparent, rgba(59,130,246,0.8), transparent)' }}
         />
         <div
@@ -264,7 +264,7 @@ export default function LandingPage() {
           {t.subtitle}
         </p>
 
-        <div className="animate-slide-up stagger-4 flex flex-col sm:flex-row items-center gap-4 mb-16">
+        <div className="animate-slide-up stagger-4 flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 flex-wrap">
           <Link
             href="/analyze"
             className="group flex items-center gap-2 px-8 py-4 rounded-2xl bg-blue-500 hover:bg-blue-400 text-white font-semibold text-base transition-all duration-200 glow-blue hover:glow-blue shadow-lg"
@@ -302,7 +302,7 @@ export default function LandingPage() {
             {t.previewCards.map((item) => (
               <div key={item.label} className="glass-card rounded-2xl p-5">
                 <p className="text-xs text-slate-500 font-medium mb-2">{item.label}</p>
-                <p className="text-sm text-slate-200 leading-relaxed">{item.value}</p>
+                <p className="text-sm text-slate-700 dark:text-slate-200 leading-relaxed">{item.value}</p>
               </div>
             ))}
           </div>
@@ -319,7 +319,7 @@ export default function LandingPage() {
                 <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-4 group-hover:bg-blue-500/20 transition-colors">
                   <Icon className="w-5 h-5 text-blue-400" />
                 </div>
-                <h3 className="text-sm font-semibold text-white mb-2">{feature.title}</h3>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-2">{feature.title}</h3>
                 <p className="text-xs text-slate-500 leading-relaxed">{feature.description}</p>
               </div>
             );
@@ -333,7 +333,7 @@ export default function LandingPage() {
         <p className="text-slate-400 mb-8">{t.ctaBottomSub}</p>
         <Link
           href="/analyze"
-          className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-white text-[#060a14] font-semibold text-base hover:bg-slate-100 transition-all duration-200"
+          className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-slate-900 text-white font-semibold text-base hover:bg-slate-800 dark:bg-white dark:text-[#060a14] dark:hover:bg-slate-100 transition-all duration-200"
         >
           {t.ctaBottomBtn}
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

@@ -1,9 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server';
-import OpenAI from 'openai';
+import { GoogleGenerativeAI, GoogleGenerativeAIFetchError } from '@google/generative-ai';
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+/** Primary model; override with GEMINI_MODEL. */
+const GEMINI_MODEL = process.env.GEMINI_MODEL?.trim() || 'gemini-2.0-flash';
+
+/** Comma-separated override; otherwise we try common alternates on 429 (separate quotas). */
+function fallbackModelIds(): string[] {
+  const fromEnv = process.env.GEMINI_FALLBACK_MODELS?.split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  if (fromEnv?.length) {
+    return fromEnv;
+  }
+  return ['gemini-2.5-flash', 'gemini-1.5-flash-002', 'gemini-2.0-flash-lite-001'];
+}
+
+function modelTryOrder(): string[] {
+  const primary = GEMINI_MODEL;
+  const rest = fallbackModelIds().filter((m) => m !== primary);
+  return [primary, ...rest];
+}
+
+function getGenAI() {
+  const key = process.env.GEMINI_API_KEY?.trim();
+  if (!key) {
+    throw new Error('Missing GEMINI_API_KEY');
+  }
+  return new GoogleGenerativeAI(key);
+}
+
+function parseRetryAfterSeconds(message: string): number | undefined {
+  const m = message.match(/Please retry in ([0-9.]+)s/i);
+  if (!m) return undefined;
+  const n = Math.ceil(parseFloat(m[1]));
+  return Number.isFinite(n) ? Math.min(Math.max(n, 1), 120) : undefined;
+}
 
 const systemPrompt = `You are a world-class marketing consultant with expertise in digital and physical product marketing, consumer psychology, and growth strategy. When given a product, you provide deeply researched, actionable, and specific marketing advice. Always return structured JSON — no markdown, no extra text, just valid JSON.`;
 
@@ -54,6 +85,20 @@ Return a JSON object with this exact structure:
 }`;
 }
 
+type GenerateInput =
+  | string
+  | (string | { inlineData: { data: string; mimeType: string } })[];
+
+async function generateJson(genAI: GoogleGenerativeAI, modelId: string, input: GenerateInput): Promise<string> {
+  const model = genAI.getGenerativeModel({
+    model: modelId,
+    systemInstruction: systemPrompt,
+    generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 2000, temperature: 0.7 },
+  });
+  const result = await model.generateContent(input);
+  return result.response.text();
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { image, price, description, location } = await req.json();
@@ -62,49 +107,52 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 });
     }
 
-    const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
-      { role: 'system', content: systemPrompt },
-    ];
+    const genAI = getGenAI();
+    const models = modelTryOrder();
 
-    if (image && image.startsWith('data:image')) {
-      messages.push({
-        role: 'user',
-        content: [
-          {
-            type: 'image_url',
-            image_url: { url: image, detail: 'low' },
-          },
-          {
-            type: 'text',
-            text: buildUserPrompt(description, price, location, true),
-          },
-        ],
-      });
-    } else {
-      messages.push({
-        role: 'user',
-        content: buildUserPrompt(description, price, location, false),
-      });
+    let last429Message = '';
+    for (const modelId of models) {
+      try {
+        let text: string;
+        if (image && image.startsWith('data:image')) {
+          const [meta, base64Data] = image.split(',');
+          const mimeType = meta.match(/:(.*?);/)?.[1] ?? 'image/jpeg';
+          const contents = [
+            { inlineData: { data: base64Data, mimeType } },
+            buildUserPrompt(description, price, location, true),
+          ];
+          text = await generateJson(genAI, modelId, contents);
+        } else {
+          text = await generateJson(genAI, modelId, buildUserPrompt(description, price, location, false));
+        }
+        return NextResponse.json(JSON.parse(text));
+      } catch (e) {
+        if (e instanceof GoogleGenerativeAIFetchError && e.status === 429) {
+          last429Message = e.message;
+          continue;
+        }
+        throw e;
+      }
     }
 
-    const response = await client.chat.completions.create({
-      model: 'gpt-4o',
-      messages,
-      response_format: { type: 'json_object' },
-      max_tokens: 2000,
-      temperature: 0.7,
-    });
-
-    const content = response.choices[0]?.message?.content;
-    if (!content) {
-      return NextResponse.json({ error: 'No response from AI.' }, { status: 500 });
+    const retryAfter = last429Message ? parseRetryAfterSeconds(last429Message) : undefined;
+    const body = {
+      error:
+        'Gemini rate limit reached for this model on the free tier. Wait a minute and retry, enable billing in Google AI Studio, or set GEMINI_MODEL / GEMINI_FALLBACK_MODELS to other models. See https://ai.google.dev/gemini-api/docs/rate-limits',
+      modelsTried: models,
+    };
+    const res = NextResponse.json(body, { status: 429 });
+    if (retryAfter != null) {
+      res.headers.set('Retry-After', String(retryAfter));
     }
-
-    const strategy = JSON.parse(content);
-    return NextResponse.json(strategy);
+    return res;
   } catch (err) {
     console.error('[/api/analyze] Error:', err);
-    if (err instanceof OpenAI.APIError) {
+    const message = err instanceof Error ? err.message : 'Internal server error.';
+    if (message.includes('Missing GEMINI_API_KEY')) {
+      return NextResponse.json({ error: 'Server missing GEMINI_API_KEY.' }, { status: 503 });
+    }
+    if (message.includes('404') || message.toLowerCase().includes('not found')) {
       return NextResponse.json(
         { error: `OpenAI API error: R{err.message}` },
         { status: err.status ?? 500 }
