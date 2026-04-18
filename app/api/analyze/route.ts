@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 const systemPrompt = `You are a world-class marketing consultant with expertise in digital and physical product marketing, consumer psychology, and growth strategy. When given a product, you provide deeply researched, actionable, and specific marketing advice. Always return structured JSON — no markdown, no extra text, just valid JSON.`;
 
@@ -62,54 +60,31 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 });
     }
 
-    const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
-      { role: 'system', content: systemPrompt },
-    ];
-
-    if (image && image.startsWith('data:image')) {
-      messages.push({
-        role: 'user',
-        content: [
-          {
-            type: 'image_url',
-            image_url: { url: image, detail: 'low' },
-          },
-          {
-            type: 'text',
-            text: buildUserPrompt(description, price, location, true),
-          },
-        ],
-      });
-    } else {
-      messages.push({
-        role: 'user',
-        content: buildUserPrompt(description, price, location, false),
-      });
-    }
-
-    const response = await client.chat.completions.create({
-      model: 'gpt-4o',
-      messages,
-      response_format: { type: 'json_object' },
-      max_tokens: 2000,
-      temperature: 0.7,
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-1.5-flash',
+      systemInstruction: systemPrompt,
+      generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 2000, temperature: 0.7 },
     });
 
-    const content = response.choices[0]?.message?.content;
-    if (!content) {
-      return NextResponse.json({ error: 'No response from AI.' }, { status: 500 });
+    const parts: Parameters<typeof model.generateContent>[0] extends { contents: infer C } ? C : never[] = [];
+
+    if (image && image.startsWith('data:image')) {
+      const [meta, base64Data] = image.split(',');
+      const mimeType = meta.match(/:(.*?);/)?.[1] ?? 'image/jpeg';
+      const contents = [
+        { inlineData: { data: base64Data, mimeType } },
+        buildUserPrompt(description, price, location, true),
+      ];
+      const result = await model.generateContent(contents);
+      const text = result.response.text();
+      return NextResponse.json(JSON.parse(text));
     }
 
-    const strategy = JSON.parse(content);
-    return NextResponse.json(strategy);
+    const result = await model.generateContent(buildUserPrompt(description, price, location, false));
+    const text = result.response.text();
+    return NextResponse.json(JSON.parse(text));
   } catch (err) {
     console.error('[/api/analyze] Error:', err);
-    if (err instanceof OpenAI.APIError) {
-      return NextResponse.json(
-        { error: `OpenAI API error: ${err.message}` },
-        { status: err.status ?? 500 }
-      );
-    }
     return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
   }
 }
