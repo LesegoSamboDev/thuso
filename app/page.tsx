@@ -217,7 +217,7 @@ export default function LandingPage() {
           <div className="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center">
             <Sparkles className="w-4 h-4 text-white" />
           </div>
-          <span className="font-semibold text-white text-lg tracking-tight">MarketMind</span>
+          <span className="font-semibold text-white text-lg tracking-tight">Thuso</span>
         </div>
 
         <div className="hidden md:flex items-center gap-8">
@@ -346,7 +346,7 @@ export default function LandingPage() {
           <div className="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center">
             <Sparkles className="w-3 h-3 text-white" />
           </div>
-          <span className="text-sm font-medium text-slate-400">MarketMind</span>
+          <span className="text-sm font-medium text-slate-400">Thuso</span>
         </div>
         <p className="text-xs text-slate-600">{t.footerPowered}</p>
       </footer>
