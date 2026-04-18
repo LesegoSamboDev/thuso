@@ -92,43 +92,46 @@ export default function AnalyzePage() {
   };
 
   return (
-    <main className="relative min-h-screen bg-[#060a14] overflow-hidden">
+    <main className="relative min-h-screen bg-background overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
-          className="animate-orb absolute -top-60 -right-40 w-[600px] h-[600px] rounded-full opacity-10"
+          className="animate-orb absolute -top-60 -right-40 w-[600px] h-[600px] rounded-full opacity-[0.07] dark:opacity-10"
           style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.7) 0%, transparent 70%)' }}
         />
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
-          backgroundSize: '48px 48px',
-        }} />
+        <div className="page-bg-grid absolute inset-0" />
       </div>
 
       <div className="relative z-10 min-h-screen">
-        <nav className="flex items-center justify-between px-6 py-6 max-w-5xl mx-auto">
+        <nav className="flex items-center justify-between px-6 py-6 pr-14 max-w-5xl mx-auto gap-4 md:pr-16">
           <Link
             href="/"
-            className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors group"
+            className="flex items-center gap-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors group shrink-0"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             <span className="text-sm">Back</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-blue-500 flex items-center justify-center">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="w-7 h-7 rounded-lg bg-blue-500 flex items-center justify-center shrink-0">
               <Sparkles className="w-3.5 h-3.5 text-white" />
             </div>
-            <span className="font-semibold text-white text-base tracking-tight">MarketMind</span>
+            <span className="font-semibold text-slate-900 dark:text-white text-base tracking-tight truncate">MarketMind</span>
           </div>
+          <Link
+            href="/content"
+            className="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 font-medium whitespace-nowrap shrink-0"
+          >
+            Ad images →
+          </Link>
         </nav>
 
         <div className="px-6 pb-24 max-w-2xl mx-auto">
           {formState === 'idle' || formState === 'error' ? (
             <div className="animate-slide-up">
               <div className="text-center mb-10">
-                <h1 className="text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight">
+                <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
                   Analyze Your Product
                 </h1>
-                <p className="text-slate-400 text-base">
+                <p className="text-slate-600 dark:text-slate-400 text-base">
                   Fill in the details below and get your AI-generated marketing strategy.
                 </p>
               </div>
@@ -138,7 +141,7 @@ export default function AnalyzePage() {
                   className={`relative rounded-2xl border-2 border-dashed transition-all duration-200 cursor-pointer ${
                     isDragging
                       ? 'border-blue-400 bg-blue-500/10'
-                      : 'border-white/10 hover:border-white/20 hover:bg-white/[0.02]'
+                      : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50/80 dark:border-white/10 dark:hover:border-white/20 dark:hover:bg-white/[0.02]'
                   }`}
                   onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
                   onDragLeave={() => setIsDragging(false)}
@@ -163,7 +166,7 @@ export default function AnalyzePage() {
                       <button
                         type="button"
                         onClick={(e) => { e.stopPropagation(); removeImage(); }}
-                        className="absolute top-6 right-6 w-7 h-7 rounded-full bg-black/60 border border-white/20 flex items-center justify-center text-white hover:bg-black/80 transition-colors"
+                        className="absolute top-6 right-6 w-7 h-7 rounded-full bg-black/50 border border-white/20 flex items-center justify-center text-white hover:bg-black/70 dark:bg-black/60 dark:hover:bg-black/80 transition-colors"
                       >
                         <X className="w-3.5 h-3.5" />
                       </button>
@@ -174,17 +177,17 @@ export default function AnalyzePage() {
                     </div>
                   ) : (
                     <div className="flex flex-col items-center justify-center py-10 px-6">
-                      <div className="w-12 h-12 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center mb-4">
-                        <Upload className="w-5 h-5 text-slate-400" />
+                      <div className="w-12 h-12 rounded-2xl bg-slate-100 border border-slate-200 dark:bg-white/[0.04] dark:border-white/10 flex items-center justify-center mb-4">
+                        <Upload className="w-5 h-5 text-slate-500 dark:text-slate-400" />
                       </div>
-                      <p className="text-sm font-medium text-slate-300 mb-1">Drop your product image here</p>
-                      <p className="text-xs text-slate-600">or click to browse — PNG, JPG, WEBP</p>
+                      <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Drop your product image here</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-600">or click to browse — PNG, JPG, WEBP</p>
                     </div>
                   )}
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">
+                  <label className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Product Price
                   </label>
                   <div className="relative">
@@ -197,13 +200,13 @@ export default function AnalyzePage() {
                       min="0"
                       step="0.01"
                       required
-                      className="w-full bg-white/[0.03] border border-white/10 rounded-xl pl-8 pr-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 focus:bg-white/[0.05] transition-all"
+                      className="w-full rounded-xl border border-slate-200 bg-white pl-8 pr-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/30 dark:border-white/10 dark:bg-white/[0.03] dark:text-white dark:placeholder:text-slate-600 dark:focus:bg-white/[0.05] transition-all"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">
+                  <label className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Product Description
                   </label>
                   <textarea
@@ -212,12 +215,12 @@ export default function AnalyzePage() {
                     placeholder="Describe your product — what it does, who it's for, what makes it unique..."
                     required
                     rows={4}
-                    className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 focus:bg-white/[0.05] transition-all resize-none"
+                    className="w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/30 dark:border-white/10 dark:bg-white/[0.03] dark:text-white dark:placeholder:text-slate-600 dark:focus:bg-white/[0.05] transition-all"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">
+                  <label className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Business Location
                   </label>
                   <input
@@ -226,7 +229,7 @@ export default function AnalyzePage() {
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="e.g. Johannesburg, South Africa"
                     required
-                    className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 focus:bg-white/[0.05] transition-all"
+                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/30 dark:border-white/10 dark:bg-white/[0.03] dark:text-white dark:placeholder:text-slate-600 dark:focus:bg-white/[0.05] transition-all"
                   />
                 </div>
 
@@ -239,7 +242,7 @@ export default function AnalyzePage() {
                 <button
                   type="submit"
                   disabled={!description.trim() || !price || !location.trim()}
-                  className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-blue-500 hover:bg-blue-400 disabled:bg-white/10 disabled:text-slate-600 text-white font-semibold text-base transition-all duration-200 glow-blue-sm disabled:shadow-none"
+                  className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-blue-500 hover:bg-blue-400 disabled:bg-slate-200 disabled:text-slate-500 dark:disabled:bg-white/10 dark:disabled:text-slate-600 text-white font-semibold text-base transition-all duration-200 glow-blue-sm disabled:shadow-none"
                 >
                   <Sparkles className="w-4 h-4" />
                   Generate Marketing Strategy
@@ -254,8 +257,8 @@ export default function AnalyzePage() {
                 </div>
                 <div className="absolute inset-0 rounded-2xl animate-ping bg-blue-500/10" />
               </div>
-              <h2 className="text-xl font-semibold text-white mb-2">Analyzing your product&hellip;</h2>
-              <p className="text-slate-500 text-sm">Our AI is crafting your marketing strategy</p>
+              <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">Analyzing your product&hellip;</h2>
+              <p className="text-slate-600 dark:text-slate-500 text-sm">Our AI is crafting your marketing strategy</p>
               <div className="mt-8 flex gap-1.5">
                 {[0, 1, 2].map((i) => (
                   <div
@@ -271,11 +274,11 @@ export default function AnalyzePage() {
               <div className="flex items-center justify-between mb-8">
                 <div>
                   <p className="text-xs text-blue-400 font-medium uppercase tracking-widest mb-1">Strategy Ready</p>
-                  <h2 className="text-2xl font-bold text-white">Your Marketing Plan</h2>
+                  <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Your Marketing Plan</h2>
                 </div>
                 <button
                   onClick={reset}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl glass-card text-sm text-slate-400 hover:text-white transition-all"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl glass-card text-sm text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-all"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   New Analysis

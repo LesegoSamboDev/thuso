@@ -30,45 +30,42 @@ const badges = ['TikTok Ads', 'Instagram', 'Google Ads', 'Pricing', 'Positioning
 
 export default function LandingPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#060a14]">
+    <main className="relative min-h-screen overflow-hidden bg-background">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
-          className="animate-orb absolute -top-40 -left-40 w-[700px] h-[700px] rounded-full opacity-20"
+          className="animate-orb absolute -top-40 -left-40 w-[700px] h-[700px] rounded-full opacity-10 dark:opacity-20"
           style={{
             background: 'radial-gradient(circle, rgba(59,130,246,0.6) 0%, transparent 70%)',
           }}
         />
         <div
-          className="animate-orb-delay absolute -bottom-60 -right-40 w-[600px] h-[600px] rounded-full opacity-15"
+          className="animate-orb-delay absolute -bottom-60 -right-40 w-[600px] h-[600px] rounded-full opacity-10 dark:opacity-15"
           style={{
             background: 'radial-gradient(circle, rgba(99,102,241,0.5) 0%, transparent 70%)',
           }}
         />
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1px] opacity-20"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1px] opacity-15 dark:opacity-20"
           style={{ background: 'linear-gradient(90deg, transparent, rgba(59,130,246,0.8), transparent)' }}
         />
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)`,
-          backgroundSize: '48px 48px',
-        }} />
+        <div className="page-bg-grid absolute inset-0" />
       </div>
 
-      <nav className="relative z-10 flex items-center justify-between px-6 py-6 max-w-7xl mx-auto">
+      <nav className="relative z-10 flex items-center justify-between px-6 py-6 pr-14 max-w-7xl mx-auto md:pr-16">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center">
             <Sparkles className="w-4 h-4 text-white" />
           </div>
-          <span className="font-semibold text-white text-lg tracking-tight">MarketMind</span>
+          <span className="font-semibold text-slate-900 dark:text-white text-lg tracking-tight">MarketMind</span>
         </div>
         <div className="hidden md:flex items-center gap-8">
-          <span className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer">How it works</span>
-          <span className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer">Features</span>
-          <span className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer">Pricing</span>
+          <span className="text-sm text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors cursor-pointer">How it works</span>
+          <span className="text-sm text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors cursor-pointer">Features</span>
+          <span className="text-sm text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors cursor-pointer">Pricing</span>
         </div>
         <Link
           href="/analyze"
-          className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg glass-card text-sm text-slate-300 hover:text-white transition-all hover:border-white/20"
+          className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg glass-card text-sm text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-all dark:hover:border-white/20"
         >
           Get started <ChevronRight className="w-3 h-3" />
         </Link>
@@ -80,18 +77,18 @@ export default function LandingPage() {
           AI-Powered Marketing Intelligence
         </div>
 
-        <h1 className="animate-slide-up stagger-2 text-5xl md:text-7xl font-bold tracking-tight text-white leading-[1.05] text-balance mb-6">
+        <h1 className="animate-slide-up stagger-2 text-5xl md:text-7xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.05] text-balance mb-6">
           Turn Your Product Into
           <br />
           <span className="gradient-text-blue">a Selling Machine</span>
         </h1>
 
-        <p className="animate-slide-up stagger-3 text-lg md:text-xl text-slate-400 max-w-2xl leading-relaxed mb-10 text-balance">
+        <p className="animate-slide-up stagger-3 text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed mb-10 text-balance">
           Upload your product and get AI-powered marketing strategies in seconds.
           Target audiences, pricing, content ideas — all tailored to your market.
         </p>
 
-        <div className="animate-slide-up stagger-4 flex flex-col sm:flex-row items-center gap-4 mb-16">
+        <div className="animate-slide-up stagger-4 flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 flex-wrap">
           <Link
             href="/analyze"
             className="group flex items-center gap-2 px-8 py-4 rounded-2xl bg-blue-500 hover:bg-blue-400 text-white font-semibold text-base transition-all duration-200 glow-blue hover:glow-blue shadow-lg"
@@ -99,14 +96,21 @@ export default function LandingPage() {
             Start Analysis
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
-          <span className="text-sm text-slate-500">No signup required</span>
+          <Link
+            href="/content"
+            className="group flex items-center gap-2 px-8 py-4 rounded-2xl glass-card-strong border border-slate-200 text-slate-900 font-semibold text-base hover:border-slate-300 dark:border-white/15 dark:text-white dark:hover:border-white/25 transition-all"
+          >
+            Generate 3 ad visuals
+            <ArrowRight className="w-4 h-4 text-slate-500 group-hover:translate-x-1 transition-transform dark:text-slate-400" />
+          </Link>
+          <span className="text-sm text-slate-500 w-full sm:w-auto text-center sm:text-left">No signup required</span>
         </div>
 
         <div className="animate-slide-up stagger-5 flex flex-wrap justify-center gap-2 mb-4">
           {badges.map((badge) => (
             <span
               key={badge}
-              className="px-3 py-1 rounded-full glass-card text-xs text-slate-400 font-medium"
+              className="px-3 py-1 rounded-full glass-card text-xs font-medium text-slate-600 dark:text-slate-400"
             >
               {badge}
             </span>
@@ -119,7 +123,7 @@ export default function LandingPage() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
             <div>
               <p className="text-xs text-blue-400 font-medium uppercase tracking-widest mb-2">Live Preview</p>
-              <h2 className="text-2xl font-bold text-white">Marketing Strategy Output</h2>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Marketing Strategy Output</h2>
             </div>
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -135,7 +139,7 @@ export default function LandingPage() {
             ].map((item) => (
               <div key={item.label} className="glass-card rounded-2xl p-5">
                 <p className="text-xs text-slate-500 font-medium mb-2">{item.label}</p>
-                <p className="text-sm text-slate-200 leading-relaxed">{item.value}</p>
+                <p className="text-sm text-slate-700 dark:text-slate-200 leading-relaxed">{item.value}</p>
               </div>
             ))}
           </div>
@@ -147,12 +151,12 @@ export default function LandingPage() {
             return (
               <div
                 key={feature.title}
-                className={`animate-slide-up stagger-${i + 2} glass-card rounded-2xl p-6 hover:border-white/15 transition-all duration-300 group`}
+                className={`animate-slide-up stagger-${i + 2} glass-card rounded-2xl p-6 hover:border-slate-300 dark:hover:border-white/15 transition-all duration-300 group`}
               >
                 <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-4 group-hover:bg-blue-500/20 transition-colors">
                   <Icon className="w-5 h-5 text-blue-400" />
                 </div>
-                <h3 className="text-sm font-semibold text-white mb-2">{feature.title}</h3>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-2">{feature.title}</h3>
                 <p className="text-xs text-slate-500 leading-relaxed">{feature.description}</p>
               </div>
             );
@@ -161,22 +165,22 @@ export default function LandingPage() {
       </section>
 
       <section className="relative z-10 px-6 pb-32 max-w-3xl mx-auto text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 text-balance">
+        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4 text-balance">
           Ready to outmarket your competition?
         </h2>
-        <p className="text-slate-400 mb-8">
+        <p className="text-slate-600 dark:text-slate-400 mb-8">
           Drop your product details and get a full strategy in under 30 seconds.
         </p>
         <Link
           href="/analyze"
-          className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-white text-[#060a14] font-semibold text-base hover:bg-slate-100 transition-all duration-200"
+          className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-slate-900 text-white font-semibold text-base hover:bg-slate-800 dark:bg-white dark:text-[#060a14] dark:hover:bg-slate-100 transition-all duration-200"
         >
           Start Analysis — It&apos;s Free
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Link>
       </section>
 
-      <footer className="relative z-10 border-t border-white/5 px-6 py-8 max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <footer className="relative z-10 border-t border-slate-200 dark:border-white/5 px-6 py-8 max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center">
             <Sparkles className="w-3 h-3 text-white" />
