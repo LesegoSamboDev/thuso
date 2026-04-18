@@ -79,7 +79,7 @@ const translations: Record<LangCode, {
     readyText: 'Ready in seconds',
     previewCards: [
       { label: 'Target Audience', value: 'Urban professionals, 25–38, health-conscious' },
-      { label: 'Pricing Insight', value: 'Position at premium tier — $49 hits the sweet spot' },
+      { label: 'Pricing Insight', value: 'Position at premium tier — R49 hits the sweet spot' },
       { label: 'Top Hook', value: '"The only tool you need to 10x your sales this week"' },
     ],
     features: [
@@ -109,7 +109,7 @@ const translations: Record<LangCode, {
     readyText: 'Ilungile ngemizuzwana',
     previewCards: [
       { label: 'Izethameli Ezihlosiwe', value: 'Abasebenzi bedolobha, 25–38, abanakekela impilo' },
-      { label: 'Ulwazi Lwentengo', value: 'Beka enqophamhlaba ephezulu — $49 ithinta indawo elungile' },
+      { label: 'Ulwazi Lwentengo', value: 'Beka enqophamhlaba ephezulu — R49 ithinta indawo elungile' },
       { label: 'I-Hook Ephezulu', value: '"Ithuluzi kuphela edingekayo ukwandisa ukuthengisa kwakho ngayi-10x"' },
     ],
     features: [
@@ -139,7 +139,7 @@ const translations: Record<LangCode, {
     readyText: 'E lokile ka metsotswana',
     previewCards: [
       { label: 'Batheetse ba Hloswang', value: 'Bašomi ba toropo, 25–38, ba ba tlhokomelang boitekanelo' },
-      { label: 'Kelo ya Tlhwatlhwa', value: 'Baya mo lephateng le le kwa godimo — $49 e baya sentle' },
+      { label: 'Kelo ya Tlhwatlhwa', value: 'Baya mo lephateng le le kwa godimo — R49 e baya sentle' },
       { label: 'Hook e e Kwa Godimo', value: '"Sediriswa se le sengwe fela se o se tlhokang go gola ga dikumo ka 10x"' },
     ],
     features: [
@@ -314,7 +314,7 @@ export default function LandingPage() {
             return (
               <div
                 key={feature.title}
-                className={`animate-slide-up stagger-${i + 2} glass-card rounded-2xl p-6 hover:border-white/15 transition-all duration-300 group`}
+                className={`animate-slide-up stagger-R{i + 2} glass-card rounded-2xl p-6 hover:border-white/15 transition-all duration-300 group`}
               >
                 <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-4 group-hover:bg-blue-500/20 transition-colors">
                   <Icon className="w-5 h-5 text-blue-400" />

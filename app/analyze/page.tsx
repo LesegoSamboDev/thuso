@@ -300,7 +300,7 @@ export default function AnalyzePage() {
                 <form onSubmit={handleSubmit} className="space-y-5">
                   {/* Image upload */}
                   <div
-                    className={`relative rounded-2xl border-2 border-dashed transition-all duration-200 cursor-pointer ${
+                    className={`relative rounded-2xl border-2 border-dashed transition-all duration-200 cursor-pointer R{
                       isDragging
                         ? 'border-blue-400 bg-blue-500/10'
                         : 'border-white/10 hover:border-white/20 hover:bg-white/[0.02]'
@@ -354,7 +354,7 @@ export default function AnalyzePage() {
                       {t.priceLabel}
                     </label>
                     <div className="relative">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm">$</span>
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm">R</span>
                       <input
                         type="number"
                         value={price}
@@ -432,7 +432,7 @@ export default function AnalyzePage() {
                     <div
                       key={i}
                       className="w-2 h-2 rounded-full bg-blue-500/40 animate-pulse"
-                      style={{ animationDelay: `${i * 0.2}s` }}
+                      style={{ animationDelay: `R{i * 0.2}s` }}
                     />
                   ))}
                 </div>

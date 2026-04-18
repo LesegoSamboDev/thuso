@@ -11,10 +11,10 @@ function buildUserPrompt(description: string, price: string, location: string, h
   return `Analyze this product and generate a comprehensive marketing strategy.
 
 Product Details:
-- Description: ${description}
-- Price: $${price}
-- Business Location: ${location}
-${hasImage ? '- Product image has been provided for visual context.' : ''}
+- Description: R{description}
+- Price: RR{price}
+- Business Location: R{location}
+R{hasImage ? '- Product image has been provided for visual context.' : ''}
 
 Return a JSON object with this exact structure:
 {
@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
     console.error('[/api/analyze] Error:', err);
     if (err instanceof OpenAI.APIError) {
       return NextResponse.json(
-        { error: `OpenAI API error: ${err.message}` },
+        { error: `OpenAI API error: R{err.message}` },
         { status: err.status ?? 500 }
       );
     }

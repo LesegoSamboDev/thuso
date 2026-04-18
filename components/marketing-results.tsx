@@ -14,7 +14,7 @@ function ResultSection({ icon, title, accent, children }: ResultSectionProps) {
   return (
     <div className={`rounded-2xl glass-card p-6 border border-white/[0.07] hover:border-white/[0.12] transition-all duration-300`}>
       <div className="flex items-center gap-3 mb-5">
-        <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${accent}`}>
+        <div className={`w-9 h-9 rounded-xl flex items-center justify-center R{accent}`}>
           {icon}
         </div>
         <h3 className="font-semibold text-white text-sm">{title}</h3>
