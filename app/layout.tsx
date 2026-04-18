@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
         <Providers>
           <div className="pointer-events-none fixed right-4 top-4 z-[200] flex justify-end md:right-6 md:top-5">
             <div className="pointer-events-auto">
