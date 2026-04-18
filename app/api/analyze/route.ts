@@ -5,14 +5,14 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const systemPrompt = `You are a world-class marketing consultant with expertise in digital and physical product marketing, consumer psychology, and growth strategy. When given a product, you provide deeply researched, actionable, and specific marketing advice. Always return structured JSON — no markdown, no extra text, just valid JSON.`;
+const systemPrompt = `You are a world-class marketing consultant with expertise in digital and physical product marketing, consumer psychology, and growth strategy. The business and its customers are in South Africa — use South African Rand (ZAR, written as R before amounts) for every price, range, and monetary example. When given a product, you provide deeply researched, actionable, and specific marketing advice. Always return structured JSON — no markdown, no extra text, just valid JSON.`;
 
 function buildUserPrompt(description: string, price: string, location: string, hasImage: boolean): string {
   return `Analyze this product and generate a comprehensive marketing strategy.
 
 Product Details:
 - Description: ${description}
-- Price: $${price}
+- Price: R${price} (ZAR — South African Rand)
 - Business Location: ${location}
 ${hasImage ? '- Product image has been provided for visual context.' : ''}
 
@@ -29,9 +29,9 @@ Return a JSON object with this exact structure:
     "brandVoice": "Recommended tone and personality for all communications"
   },
   "pricingFeedback": {
-    "assessment": "Quick verdict on the current price point (e.g. 'Underpriced for the value delivered')",
-    "recommendation": "Specific pricing recommendation with exact numbers or ranges",
-    "reasoning": "Market-based reasoning for the recommendation"
+    "assessment": "Quick verdict on the current price point in ZAR (e.g. 'Underpriced for the value delivered')",
+    "recommendation": "Specific pricing recommendation with exact amounts or ranges in ZAR (use R prefix, e.g. R299–R399)",
+    "reasoning": "Market-based reasoning for the recommendation, grounded in the South African market"
   },
   "contentIdeas": {
     "tiktok": ["idea 1", "idea 2", "idea 3"],
